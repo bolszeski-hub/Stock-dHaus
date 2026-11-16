@@ -66,7 +66,7 @@
     '<div class="buy-row"><div class="qty"><button type="button" id="dec" aria-label="Decrease quantity">−</button><output id="qty" aria-live="polite">1</output><button type="button" id="inc" aria-label="Increase quantity">+</button></div>' +
     '<button class="btn" type="button" id="add">Add to cart</button></div>' +
     '<div class="pdp-notes">' + (p.giftCard ? '<span>Delivered by email</span><span>Never expires [confirm]</span>' :
-      '<span>Ships frozen and vacuum-sealed</span><span>Free shipping on orders of ' + S.money(set.freeShippingCents) + ' or more</span><span>Members save on every order</span>') + '</div>' +
+      (S.isExclusive(p.brand) ? '<span>' + S.esc(S.exclusiveNote(brand)) + '</span>' : '') + '<span>Ships frozen and vacuum-sealed</span><span>Free shipping on orders of ' + S.money(set.freeShippingCents) + ' or more</span><span>Members save on every order</span>') + '</div>' +
     '<div class="acc">' +
     '<details open><summary>About this product</summary><div class="acc-body"><p>' + S.esc(p.description || '[Product description to come from ' + brand + '.]') + '</p></div></details>' +
     (p.giftCard ? '' :

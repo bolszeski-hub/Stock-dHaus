@@ -389,3 +389,13 @@
 .sticky-buy .btn { min-height: 46px; padding: 0 20px; }
 @media (max-width: 760px) { .sticky-buy { display: flex; } body[data-page="product"] .preview-flag { display: none; } }
 input[type="search"]::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
+
+/* ---------- U.S. exclusive brands ---------- */
+.badge--excl { color: var(--gold); border-color: var(--gold); }
+.bt-excl { position: absolute !important; top: 14px; right: 14px; padding: 4px 8px; font-size: 10px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); border: 1px solid var(--gold); background: rgba(11, 9, 8, .7); }
+.excl-strip { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 28px; margin-top: 22px; padding: 20px 24px; border: 1px solid var(--line-2); border-left: 2px solid var(--gold); background: var(--bg-2); }
+.excl-strip .eyebrow { margin: 0; }
+.excl-text { margin: 0; flex: 1 1 420px; color: var(--text-2); font-size: 16px; }
+.excl-text a { color: var(--text); text-decoration-color: var(--gold); text-underline-offset: 3px; }
+.excl-text a:hover { color: var(--gold-hi); }
+.bb-excl { margin: 0 0 10px; font-size: 11.5px; font-weight: 500; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); line-height: 1.6; }

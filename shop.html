@@ -97,7 +97,8 @@
     banner.hidden = !brand;
     if (brand) banner.innerHTML = (brand.image ? '<img class="bb-bg" src="' + brand.image + '" alt="">' : '') +
       '<div class="bb-body">' + (brand.mark ? '<img class="bb-mark" src="' + brand.mark + '" alt="">' : '') +
-      '<p class="bb-story">' + S.esc(brand.story || '[A short story about ' + brand.name + ': where it comes from, what makes it different, and who it suits.]') + '</p>' +
+      '<div>' + (brand.usExclusive ? '<p class="bb-excl">' + S.esc(S.exclusiveNote(brand.name)) + '</p>' : '') +
+      '<p class="bb-story">' + S.esc(brand.story || '[A short story about ' + brand.name + ': where it comes from, what makes it different, and who it suits.]') + '</p></div>' +
       (brand.site ? '<a class="text-link" href="' + brand.site + '" target="_blank" rel="noopener">Visit ' + S.esc(brand.name) + ' →</a>' : '') + '</div>';
     var list = S.products.filter(function (p) {
       if (state.brand && p.brand !== state.brand) return false;

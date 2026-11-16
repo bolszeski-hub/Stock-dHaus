@@ -21,8 +21,8 @@ SH.settings = {
 SH.brands = [
   { id: 'wc-wagyu', name: 'WC Wagyu', line: 'Australian wagyu, graded by bloodline and marble score.', mark: 'images/wc-wagyu-mark.webp', image: 'images/hero-ribeye.webp', site: 'https://windycitywagyu.vercel.app',
     story: 'Australian wagyu bred from Japanese bloodlines, fed on grain for 450 days or more, and graded on Australia\'s official marbling scale. Every cut carries its tier (Black, Gold or White) and its marble score on the label.' },
-  { id: 'joker-wagyu', name: 'Joker Wagyu', line: '[One line about Joker Wagyu]' },
-  { id: 'gambler-wagyu', name: 'Gambler Wagyu', line: '[One line about Gambler Wagyu]' },
+  { id: 'joker-wagyu', name: 'Joker Wagyu', usExclusive: true, line: '[One line about Joker Wagyu]' },
+  { id: 'gambler-wagyu', name: 'Gambler Wagyu', usExclusive: true, line: '[One line about Gambler Wagyu]' },
   { id: 'purely-meat-co', name: 'Purely Meat Co.', line: '[One line about Purely Meat Co.]' },
   { id: 'samuels-seafood-co', name: 'Samuels Seafood Co.', line: '[One line about Samuels Seafood Co.]' }
 ];
@@ -85,6 +85,15 @@ SH.products = [
     variants: [{ label: '$50', price: 5000 }, { label: '$100', price: 10000 }, { label: '$200', price: 20000 }, { label: '$500', price: 50000 }],
     description: 'Let them choose. Delivered by email, spendable on anything in the store.' }
 ];
+
+// Exclusive U.S. distribution (brands with usExclusive: true)
+SH.exclusiveNote = function (name) {
+  return 'Stock\'d Up and Stock\'d Haus are the exclusive distributors of ' + name + ' in the United States.';
+};
+SH.isExclusive = function (brandId) {
+  var b = SH.brands.find(function (x) { return x.id === brandId; });
+  return !!(b && b.usExclusive);
+};
 
 SH.brandName = function (id) {
   if (id === 'stockd-haus') return "Stock'd Haus";

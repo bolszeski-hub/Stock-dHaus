@@ -238,6 +238,15 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !drawer.hidden) closeCart(); });
   render();
 
+  // ---------- brand tiles (home, about) ----------
+  S.brandTile = function (b) {
+    return '<a class="brand-tile" href="shop.html?brand=' + b.id + '" data-reveal>' +
+      (b.image ? '<img class="bt-bg" src="' + b.image + '" alt="" loading="lazy">' : '') +
+      (b.usExclusive ? '<span class="bt-excl">U.S. exclusive</span>' : '') +
+      (b.mark ? '<img class="bt-mark" src="' + b.mark + '" alt="">' : '') +
+      '<span class="bt-name">' + S.esc(b.name) + '</span><span class="bt-line">' + S.esc(b.line) + '</span><span class="bt-cta">Shop →</span></a>';
+  };
+
   // ---------- product cards ----------
   S.fromPrice = function (p) {
     return p.variants ? Math.min.apply(null, p.variants.map(function (v) { return v.price; })) : p.price;
@@ -247,7 +256,8 @@
     return '<div class="ph"><span class="ph-brand">' + S.esc(S.brandName(p.brand)) + '</span><span class="ph-note">Photo coming soon</span></div>';
   };
   S.card = function (p) {
-    var badges = (p.badges || []).map(function (b) { return '<span class="badge">' + S.esc(b) + '</span>'; }).join('');
+    var badges = (S.isExclusive(p.brand) ? '<span class="badge badge--excl">U.S. exclusive</span>' : '') +
+      (p.badges || []).map(function (b) { return '<span class="badge">' + S.esc(b) + '</span>'; }).join('');
     if (p.compareAt) badges += '<span class="badge badge--save">Save ' + Math.round((1 - p.price / p.compareAt) * 100) + '%</span>';
     var from = p.variants ? 'From ' : '';
     return '<article class="card" data-reveal>' +

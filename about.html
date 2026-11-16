@@ -35,6 +35,10 @@
 <div class="wrap">
 <div class="section-head"><p class="eyebrow" data-reveal>Our brands</p><h2 id="our-brands" class="h2" data-reveal style="--d:.1s">Under one roof</h2></div>
 <div class="brands" id="brand-tiles"></div>
+<div class="excl-strip" data-reveal>
+<p class="eyebrow">Only here in the U.S.</p>
+<p class="excl-text">Stock'd Up and Stock'd Haus are the exclusive distributors of <a href="shop.html?brand=joker-wagyu">Joker Wagyu</a> and <a href="shop.html?brand=gambler-wagyu">Gambler Wagyu</a> in the United States.</p>
+</div>
 </div>
 </section>
 </main>
@@ -42,10 +46,7 @@
 <script src="assets/js/catalog.js"></script>
 <script src="assets/js/store.js"></script>
 <script>
-document.getElementById('brand-tiles').innerHTML = SH.brands.map(function (b) {
-  return '<a class="brand-tile" href="shop.html?brand=' + b.id + '" data-reveal>' + (b.image ? '<img class="bt-bg" src="' + b.image + '" alt="" loading="lazy">' : '') +
-    (b.mark ? '<img class="bt-mark" src="' + b.mark + '" alt="">' : '') + '<span class="bt-name">' + SH.esc(b.name) + '</span><span class="bt-line">' + SH.esc(b.line) + '</span><span class="bt-cta">Shop →</span></a>';
-}).join('');
+document.getElementById('brand-tiles').innerHTML = SH.brands.map(SH.brandTile).join('');
 SH.reveal();
 </script>
 </body>

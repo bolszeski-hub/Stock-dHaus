@@ -40,6 +40,10 @@
 <h2 id="brands-title" class="h2" data-reveal style="--d:.1s">Our brands, under one roof</h2>
 </div>
 <div class="brands" id="brand-tiles"></div>
+<div class="excl-strip" data-reveal>
+<p class="eyebrow">Only here in the U.S.</p>
+<p class="excl-text">Stock'd Up and Stock'd Haus are the exclusive distributors of <a href="shop.html?brand=joker-wagyu">Joker Wagyu</a> and <a href="shop.html?brand=gambler-wagyu">Gambler Wagyu</a> in the United States.</p>
+</div>
 </div>
 </section>
 
@@ -153,12 +157,7 @@
 <script>
 (function () {
   var S = window.SH;
-  document.getElementById('brand-tiles').innerHTML = S.brands.map(function (b) {
-    return '<a class="brand-tile" href="shop.html?brand=' + b.id + '" data-reveal>' +
-      (b.image ? '<img class="bt-bg" src="' + b.image + '" alt="" loading="lazy">' : '') +
-      (b.mark ? '<img class="bt-mark" src="' + b.mark + '" alt="">' : '') +
-      '<span class="bt-name">' + S.esc(b.name) + '</span><span class="bt-line">' + S.esc(b.line) + '</span><span class="bt-cta">Shop →</span></a>';
-  }).join('');
+  document.getElementById('brand-tiles').innerHTML = S.brands.map(S.brandTile).join('');
   var featured = S.products.filter(function (p) { return p.featured; }).sort(function (a, b) { return a.featured - b.featured; });
   document.getElementById('rail-featured').innerHTML = featured.map(S.card).join('');
   document.getElementById('rail-wc').innerHTML = S.products.filter(function (p) { return p.brand === 'wc-wagyu'; }).map(S.card).join('');
