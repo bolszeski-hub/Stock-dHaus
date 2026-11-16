@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Checkout — Stock'd Haus</title>
+<meta name="description" content="Review your order.">
+<meta name="theme-color" content="#100E0D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&amp;family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&amp;family=Jost:wght@300;400;500;600&amp;display=swap">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/store.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body data-page="checkout">
+
+<main class="page-top section" style="padding-bottom: clamp(72px, 9vw, 120px)">
+<div class="wrap">
+<div class="split split--top">
+<div>
+<p class="eyebrow">Checkout</p>
+<h1 class="h2" style="margin: 0">Review your order</h1>
+<p class="lede" style="margin-top: 20px">This is a preview of the store. Payment, shipping and order confirmation connect when Stock'd Haus launches on its commerce platform.</p>
+<div class="btns" style="margin-top: 28px"><a class="btn btn--ghost" href="shop.html">Keep shopping</a></div>
+</div>
+<div class="box-panel" style="position: static">
+<h2>Order summary</h2>
+<ul class="box-items" id="sum-lines" style="max-height: none"></ul>
+<div class="box-sum">
+<div><span>Subtotal</span><span id="c-sub"></span></div>
+<div><span>Shipping</span><span id="c-ship"></span></div>
+<div class="total"><span>Estimated total</span><b id="c-total"></b></div>
+</div>
+<p class="fine" id="c-gift"></p>
+<button class="btn btn--block" type="button" id="pay" disabled>Payment connects at launch</button>
+</div>
+</div>
+</div>
+</main>
+
+<script src="assets/js/catalog.js"></script>
+<script src="assets/js/store.js"></script>
+<script>
+(function () {
+  var S = SH;
+  function draw() {
+    var sub = S.cartSubtotal(), ship = sub === 0 || sub >= S.settings.freeShippingCents ? 0 : S.settings.flatShippingCents;
+    document.getElementById('sum-lines').innerHTML = S.cart.length ? S.cart.map(function (l) {
+      return '<li><span>' + l.qty + ' × ' + S.esc(l.name) + '<small>' + S.esc([S.brandName(l.brand), l.variant, l.plan === 'subscribe' ? 'Subscribe and save' : ''].filter(Boolean).join(' · ')) + '</small></span><b>' + S.money(l.price * l.qty) + '</b></li>';
+    }).join('') : '<li style="display: block; color: var(--text-3)">Your cart is empty.</li>';
+    document.getElementById('c-sub').textContent = S.money(sub);
+    document.getElementById('c-ship').textContent = ship ? S.money(ship) : 'Free';
+    document.getElementById('c-total').textContent = S.money(sub + ship);
+    var g = null; try { g = JSON.parse(localStorage.getItem('sh-gift')); } catch (e) {}
+    document.getElementById('c-gift').textContent = g && g.on ? 'Gift message: ' + (g.note || '(none yet)') : '';
+  }
+  document.addEventListener('cart:change', draw);
+  draw();
+})();
+</script>
+</body>
+</html>

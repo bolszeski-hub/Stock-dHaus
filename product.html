@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Product — Stock'd Haus</title>
+<meta name="description" content="Premium meat and seafood from the Stock'd Up family of brands.">
+<meta name="theme-color" content="#100E0D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&amp;family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&amp;family=Jost:wght@300;400;500;600&amp;display=swap">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/store.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body data-page="product">
+
+<main class="page-top section" style="padding-bottom: clamp(64px, 8vw, 104px)">
+<div class="wrap" id="pdp"></div>
+</main>
+
+<section class="section section--alt" aria-labelledby="more-title" style="padding-block: clamp(64px, 8vw, 104px)">
+<div class="wrap">
+<div class="shop-head">
+<div><p class="eyebrow">Complete the order</p><h2 id="more-title" class="h2">You might also like</h2></div>
+<p class="muted small" id="more-ship"></p>
+</div>
+<div class="rail" id="more"></div>
+</div>
+</section>
+
+<script src="assets/js/catalog.js"></script>
+<script src="assets/js/store.js"></script>
+<script>
+(function () {
+  var S = window.SH, set = S.settings;
+  var p = S.product(S.param('id')) || S.products[0];
+  var variant = p.variants ? p.variants[0] : null;
+  var plan = 'once', qty = 1;
+  var brand = S.brandName(p.brand);
+  document.title = brand + ' ' + p.name + ' — Stock\'d Haus';
+
+  function unitPrice() {
+    var base = variant ? variant.price : p.price;
+    return plan === 'subscribe' ? Math.round(base * (100 - set.subscribeSavePercent) / 100) : base;
+  }
+  var root = document.getElementById('pdp');
+  root.innerHTML =
+    '<div class="pdp">' +
+    '<div class="pdp-media">' + S.media(p) + '</div>' +
+    '<div>' +
+    '<p class="crumbs"><a href="shop.html">Shop</a> / <a href="shop.html?brand=' + p.brand + '">' + S.esc(brand) + '</a></p>' +
+    '<p class="card-brand">' + S.esc(brand) + (p.tier ? ' · ' + p.tier + ' tier' : '') + '</p>' +
+    '<h1>' + S.esc(p.name) + '</h1>' +
+    '<p class="card-size" style="margin: 0 0 18px">' + S.esc(p.size || '') + '</p>' +
+    '<p class="pdp-price"><span id="price"></span>' + (p.compareAt ? '<s>' + S.money(p.compareAt) + '</s>' : '') + '</p>' +
+    (p.variants ? '<div class="opt"><p class="opt-label">' + (p.giftCard ? 'Amount' : p.brand === 'wc-wagyu' ? 'Marble score' : 'Option') + ': <b id="vlabel"></b></p><div class="swatches" id="variants">' +
+      p.variants.map(function (v, i) { return '<button type="button" data-v="' + i + '" aria-pressed="' + (i === 0) + '">' + S.esc(v.label) + '</button>'; }).join('') +
+      '</div>' + (p.brand === 'wc-wagyu' ? '<p class="fine" style="margin-top: 10px">The higher the score, the richer the steak. <a href="https://windycitywagyu.vercel.app/our-grading.html" target="_blank" rel="noopener">How WC Wagyu grades →</a></p>' : '') + '</div>' : '') +
+    (p.subscribable ? '<div class="opt"><p class="opt-label">Purchase option</p><div class="plans">' +
+      '<label class="plan"><input type="radio" name="plan" value="once" checked><span><b>One-time purchase</b></span><span class="plan-price" data-plan="once"></span></label>' +
+      '<label class="plan"><input type="radio" name="plan" value="subscribe"><span><b>Subscribe and save ' + set.subscribeSavePercent + '%</b><small>Delivered every month. Skip or cancel anytime [confirm].</small></span><span class="plan-price" data-plan="subscribe"></span></label>' +
+      '</div></div>' : '') +
+    '<div class="buy-row"><div class="qty"><button type="button" id="dec" aria-label="Decrease quantity">−</button><output id="qty" aria-live="polite">1</output><button type="button" id="inc" aria-label="Increase quantity">+</button></div>' +
+    '<button class="btn" type="button" id="add">Add to cart</button></div>' +
+    '<div class="pdp-notes">' + (p.giftCard ? '<span>Delivered by email</span><span>Never expires [confirm]</span>' :
+      '<span>Ships frozen and vacuum-sealed</span><span>Free shipping on orders of ' + S.money(set.freeShippingCents) + ' or more</span><span>Members save on every order</span>') + '</div>' +
+    '<div class="acc">' +
+    '<details open><summary>About this product</summary><div class="acc-body"><p>' + S.esc(p.description || '[Product description to come from ' + brand + '.]') + '</p></div></details>' +
+    (p.giftCard ? '' :
+    '<details><summary>Storage and thawing</summary><div class="acc-body"><p>Move everything to the freezer as soon as it arrives, still sealed.</p><p>Thaw in the fridge, still sealed, for 24 to 48 hours; large cuts may need up to 72 hours. Never thaw on the counter.</p><p>Cook within 3 to 4 days of thawing, and do not refreeze. [confirm]</p></div></details>' +
+    '<details><summary>Shipping</summary><div class="acc-body"><p>Packed frozen in an insulated cooler and shipped Monday to Thursday. Free shipping on orders of ' + S.money(set.freeShippingCents) + ' or more; a flat ' + S.money(set.flatShippingCents) + ' below that. [confirm]</p><p><a href="help.html#shipping">Full shipping details →</a></p></div></details>' +
+    '<details><summary>Sending it as a gift</summary><div class="acc-body"><p>Enter their address at checkout and we ship it straight to them. Tick "This is a gift" in your cart to add a message, and we tuck it into the box.</p></div></details>') +
+    '</div></div></div>';
+
+  var priceEl = document.getElementById('price');
+  function update() {
+    priceEl.textContent = S.money(unitPrice());
+    var vl = document.getElementById('vlabel'); if (vl && variant) vl.textContent = variant.label;
+    document.querySelectorAll('[data-plan]').forEach(function (el) {
+      var base = variant ? variant.price : p.price;
+      el.textContent = S.money(el.dataset.plan === 'subscribe' ? Math.round(base * (100 - set.subscribeSavePercent) / 100) : base);
+    });
+    document.getElementById('qty').textContent = qty;
+  }
+  root.addEventListener('click', function (e) {
+    var v = e.target.closest('[data-v]');
+    if (v) {
+      variant = p.variants[+v.dataset.v];
+      root.querySelectorAll('[data-v]').forEach(function (b) { b.setAttribute('aria-pressed', b === v); });
+      update();
+    }
+    if (e.target.closest('#inc')) { qty++; update(); }
+    if (e.target.closest('#dec')) { qty = Math.max(1, qty - 1); update(); }
+    if (e.target.closest('#add')) {
+      S.addToCart({ id: p.id, name: p.name, brand: p.brand, size: p.size, image: p.image, price: unitPrice(),
+        variant: variant ? variant.label : '', plan: plan, qty: qty });
+    }
+  });
+  root.addEventListener('change', function (e) { if (e.target.name === 'plan') { plan = e.target.value; update(); } });
+  update();
+
+  // Complete the order: other products, same brand first
+  var others = S.products.filter(function (x) { return x.id !== p.id && !x.giftCard; })
+    .sort(function (a, b) { return (b.brand === p.brand) - (a.brand === p.brand) || (a.featured || 99) - (b.featured || 99); }).slice(0, 8);
+  document.getElementById('more').innerHTML = others.map(S.card).join('');
+  document.getElementById('more-ship').textContent = 'Orders of ' + S.money(set.freeShippingCents) + ' or more ship free.';
+  S.reveal();
+})();
+</script>
+</body>
+</html>

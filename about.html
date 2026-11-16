@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About — Stock'd Haus</title>
+<meta name="description" content="Stock'd Haus is the online store of Stock'd Up Brands.">
+<meta name="theme-color" content="#100E0D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&amp;family=Cormorant+Garamond:ital,wght@0,500;1,400;1,500&amp;family=Jost:wght@300;400;500;600&amp;display=swap">
+<link rel="stylesheet" href="assets/css/base.css">
+<link rel="stylesheet" href="assets/css/store.css">
+<script>document.documentElement.classList.add('js')</script>
+</head>
+<body data-page="about">
+
+<main>
+<section class="hero hero--short">
+<div class="hero-media"><img src="images/chef-plating.webp" alt="A chef plating sliced wagyu in a restaurant kitchen" width="2400" height="1350" fetchpriority="high"></div>
+<div class="wrap">
+<p class="eyebrow" data-hero="1">About us</p>
+<h1 class="display display--md" data-hero="2">The brands chefs trust, now in your kitchen.</h1>
+<p class="lede" data-hero="3">Stock'd Haus is the online store of Stock'd Up Brands.</p>
+</div>
+</section>
+<section class="section">
+<div class="wrap wrap--narrow muted">
+<p class="placeholder-note">[ABOUT: who Stock'd Up Brands is, how long you've supplied restaurants, how you choose your brands, and what Stock'd Haus promises home cooks. Three or four short paragraphs.]</p>
+</div>
+</section>
+<section class="section section--alt" aria-labelledby="our-brands">
+<div class="wrap">
+<div class="section-head"><p class="eyebrow" data-reveal>Our brands</p><h2 id="our-brands" class="h2" data-reveal style="--d:.1s">Under one roof</h2></div>
+<div class="brands" id="brand-tiles"></div>
+</div>
+</section>
+</main>
+
+<script src="assets/js/catalog.js"></script>
+<script src="assets/js/store.js"></script>
+<script>
+document.getElementById('brand-tiles').innerHTML = SH.brands.map(function (b) {
+  return '<a class="brand-tile" href="shop.html?brand=' + b.id + '" data-reveal>' + (b.image ? '<img class="bt-bg" src="' + b.image + '" alt="" loading="lazy">' : '') +
+    (b.mark ? '<img class="bt-mark" src="' + b.mark + '" alt="">' : '') + '<span class="bt-name">' + SH.esc(b.name) + '</span><span class="bt-line">' + SH.esc(b.line) + '</span><span class="bt-cta">Shop →</span></a>';
+}).join('');
+SH.reveal();
+</script>
+</body>
+</html>
