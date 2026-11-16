@@ -47,7 +47,7 @@
   header.innerHTML =
     '<div class="announce">Free shipping on orders of ' + S.money(set.freeShippingCents) + ' or more · Ships frozen, Monday to Thursday [confirm]</div>' +
     '<div class="wrap">' +
-    '<a class="brand brand--text" href="index.html" aria-label="Stock\'d Haus home">STOCK\'D HAUS</a>' +
+    '<a class="brand brand--logo" href="index.html"><img src="images/brand/logo-wordmark.webp" alt="Stock\'d Haus" width="900" height="121"></a>' +
     '<nav id="site-nav" class="nav" aria-label="Main">' + nav.map(navLink).join('') + '</nav>' +
     '<div class="header-icons">' +
     '<a class="icon-btn" href="shop.html?focus=search" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></a>' +
@@ -66,7 +66,7 @@
     '<form class="news-form" data-signup><label class="visually-hidden" for="news-email">Email address</label><input id="news-email" type="email" placeholder="Email address" required><button class="btn" type="submit">Sign up</button></form>' +
     '</div>' +
     '<div class="footer-cols">' +
-    '<div><p class="footer-brand-text">STOCK\'D HAUS</p><p class="fine">The online store of Stock\'d Up Brands.</p></div>' +
+    '<div><a class="footer-logo" href="index.html"><img src="images/brand/logo-lockup-' + (S.param('logo') === 'rules' ? 'rules' : 'plain') + '.webp" alt="Stock\'d Haus, by Stock\'d Up" width="1000" height="195" loading="lazy"></a><p class="fine">The online store of Stock\'d Up Brands.</p></div>' +
     '<div><h3>Shop</h3>' + S.brands.map(function (b) { return '<a href="shop.html?brand=' + b.id + '">' + S.esc(b.name) + '</a>'; }).join('') + '<a href="shop.html?category=gifts">Gift cards</a></div>' +
     '<div><h3>Help</h3><a href="help.html#shipping">Shipping</a><a href="help.html#storage">Storage & thawing</a><a href="help.html#faq">FAQ</a><a href="help.html#contact">Contact us</a></div>' +
     '<div><h3>Stock\'d Haus</h3><a href="about.html">About</a><a href="membership.html">Membership</a><a href="build-your-box.html">Build Your Box</a><a href="help.html#trade">Restaurants & trade</a></div>' +
