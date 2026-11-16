@@ -100,6 +100,16 @@
     }
   });
   root.addEventListener('change', function (e) { if (e.target.name === 'plan') { plan = e.target.value; update(); } });
+  var bar = document.createElement('div');
+  bar.className = 'sticky-buy';
+  bar.innerHTML = '<div class="sb-text"><p class="sb-name">' + S.esc(brand + ' ' + p.name) + '</p><p class="sb-price"></p></div><button class="btn" type="button">Add to cart</button>';
+  document.body.appendChild(bar);
+  bar.querySelector('button').addEventListener('click', function () { document.getElementById('add').click(); });
+  var addBtn = document.getElementById('add');
+  function barCheck() { bar.classList.toggle('is-on', addBtn.getBoundingClientRect().bottom < 0); }
+  window.addEventListener('scroll', barCheck, { passive: true }); barCheck();
+  var baseUpdate = update;
+  update = function () { baseUpdate(); bar.querySelector('.sb-price').textContent = S.money(unitPrice()) + (variant ? ' · ' + variant.label : ''); };
   update();
 
   // Complete the order: other products, same brand first

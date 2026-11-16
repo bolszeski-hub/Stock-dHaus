@@ -29,7 +29,7 @@
     ['shop.html?category=seafood', 'Seafood', 'seafood'],
     ['build-your-box.html', 'Build Your Box', 'box'],
     ['membership.html', 'Membership', 'membership'],
-    ['shop.html?category=gifts', 'Gifts', 'gifts'],
+    ['gifts.html', 'Gifts', 'gifts'],
     ['about.html', 'About', 'about']
   ];
   function navLink(n) {
@@ -50,7 +50,7 @@
     '<a class="brand brand--logo" href="index.html"><img src="images/brand/logo-wordmark.webp" alt="Stock\'d Haus" width="900" height="121"></a>' +
     '<nav id="site-nav" class="nav" aria-label="Main">' + nav.map(navLink).join('') + '</nav>' +
     '<div class="header-icons">' +
-    '<a class="icon-btn" href="shop.html?focus=search" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></a>' +
+    '<button class="icon-btn search-btn" type="button" aria-label="Search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></svg></button>' +
     '<button class="icon-btn cart-btn" type="button" aria-label="Open cart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14l-1.2 12.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8L5 7z"/><path d="M9 7V5.5a3 3 0 0 1 6 0V7"/></svg><span class="cart-count" hidden>0</span></button>' +
     '<button class="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="site-nav"><span></span><span></span></button>' +
     '</div></div>';
@@ -66,12 +66,12 @@
     '<form class="news-form" data-signup><label class="visually-hidden" for="news-email">Email address</label><input id="news-email" type="email" placeholder="Email address" required><button class="btn" type="submit">Sign up</button></form>' +
     '</div>' +
     '<div class="footer-cols">' +
-    '<div><a class="footer-logo" href="index.html"><img src="images/brand/logo-lockup-' + (S.param('logo') === 'rules' ? 'rules' : 'plain') + '.webp" alt="Stock\'d Haus, by Stock\'d Up" width="1000" height="195" loading="lazy"></a><p class="fine">The online store of Stock\'d Up Brands.</p></div>' +
-    '<div><h3>Shop</h3>' + S.brands.map(function (b) { return '<a href="shop.html?brand=' + b.id + '">' + S.esc(b.name) + '</a>'; }).join('') + '<a href="shop.html?category=gifts">Gift cards</a></div>' +
+    '<div><a class="footer-logo" href="index.html"><img src="images/brand/logo-lockup.webp" alt="Stock\'d Haus, by Stock\'d Up" width="1000" height="195" loading="lazy"></a><p class="fine">The online store of Stock\'d Up Brands.</p></div>' +
+    '<div><h3>Shop</h3>' + S.brands.map(function (b) { return '<a href="shop.html?brand=' + b.id + '">' + S.esc(b.name) + '</a>'; }).join('') + '<a href="gifts.html">Gifts & gift cards</a></div>' +
     '<div><h3>Help</h3><a href="help.html#shipping">Shipping</a><a href="help.html#storage">Storage & thawing</a><a href="help.html#faq">FAQ</a><a href="help.html#contact">Contact us</a></div>' +
-    '<div><h3>Stock\'d Haus</h3><a href="about.html">About</a><a href="membership.html">Membership</a><a href="build-your-box.html">Build Your Box</a><a href="help.html#trade">Restaurants & trade</a></div>' +
+    '<div><h3>Stock\'d Haus</h3><a href="about.html">About</a><a href="journal.html">Journal</a><a href="membership.html">Membership</a><a href="build-your-box.html">Build Your Box</a><a href="help.html#trade">Restaurants & trade</a></div>' +
     '</div>' +
-    '<div class="footer-meta"><span>© 2026 Stock\'d Up Brands</span><span>[Refund policy] · [Terms] · [Privacy]</span></div>' +
+    '<div class="footer-meta"><span>© 2026 Stock\'d Up Brands</span><span class="footer-policies"><a href="policies.html#shipping">Shipping policy</a><a href="policies.html#refunds">Refunds</a><a href="policies.html#terms">Terms</a><a href="policies.html#privacy">Privacy</a></span></div>' +
     '</div>';
   document.body.appendChild(footer);
 
@@ -106,6 +106,46 @@
     toast.textContent = msg; toast.classList.add('is-on');
     clearTimeout(toastTimer); toastTimer = setTimeout(function () { toast.classList.remove('is-on'); }, 2600);
   };
+
+  // ---------- search ----------
+  var search = document.createElement('div');
+  search.className = 'search';
+  search.hidden = true;
+  search.innerHTML = '<div class="search-panel" role="dialog" aria-modal="true" aria-label="Search">' +
+    '<div class="wrap"><div class="search-row"><label class="visually-hidden" for="search-q">Search products and brands</label>' +
+    '<input id="search-q" type="search" placeholder="Search ribeye, seafood, a brand…" autocomplete="off">' +
+    '<button class="icon-btn" type="button" data-search-close aria-label="Close search"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>' +
+    '<div class="search-results" aria-live="polite"></div></div></div>';
+  document.body.appendChild(search);
+  var sq = search.querySelector('#search-q'), sres = search.querySelector('.search-results');
+  function runSearch() {
+    var q = sq.value.trim().toLowerCase();
+    if (!q) {
+      sres.innerHTML = '<p class="search-k">Popular</p><div class="search-chips">' +
+        ['Ribeye', 'Wagyu', 'Seafood', 'Gift card', 'Box'].map(function (t) { return '<button type="button" class="chip-btn" data-q="' + t + '">' + t + '</button>'; }).join('') + '</div>';
+      return;
+    }
+    var brands = S.brands.filter(function (b) { return b.name.toLowerCase().indexOf(q) >= 0; });
+    var prods = S.products.filter(function (p) {
+      return (p.name + ' ' + S.brandName(p.brand) + ' ' + (p.tier || '') + ' ' + p.category).toLowerCase().indexOf(q) >= 0;
+    }).slice(0, 6);
+    sres.innerHTML = (brands.length ? '<p class="search-k">Brands</p><div class="search-chips">' + brands.map(function (b) { return '<a class="chip-btn" href="shop.html?brand=' + b.id + '">' + S.esc(b.name) + '</a>'; }).join('') + '</div>' : '') +
+      (prods.length ? '<p class="search-k">Products</p><div class="search-list">' + prods.map(function (p) {
+        return '<a class="search-item" href="product.html?id=' + p.id + '"><span class="search-thumb">' + (p.image ? '<img src="' + p.image + '" alt="">' : '') + '</span>' +
+          '<span><small>' + S.esc(S.brandName(p.brand)) + '</small>' + S.esc(p.name) + '</span><b>' + (p.variants ? 'From ' : '') + S.money(S.fromPrice(p)) + '</b></a>';
+      }).join('') + '</div><a class="text-link" href="shop.html?q=' + encodeURIComponent(q) + '">See all results →</a>' : '') +
+      (!brands.length && !prods.length ? '<p class="muted">Nothing matches "' + S.esc(sq.value) + '". Try a cut, like ribeye, or a brand.</p>' : '');
+  }
+  function openSearch() { search.hidden = false; document.body.style.overflow = 'hidden'; runSearch(); requestAnimationFrame(function () { search.classList.add('is-open'); sq.focus(); }); }
+  function closeSearch() { search.classList.remove('is-open'); search.hidden = true; document.body.style.overflow = ''; }
+  sq.addEventListener('input', runSearch);
+  sq.addEventListener('keydown', function (e) { if (e.key === 'Enter' && sq.value.trim()) location.href = 'shop.html?q=' + encodeURIComponent(sq.value.trim()); });
+  search.addEventListener('click', function (e) {
+    if (e.target === search || e.target.closest('[data-search-close]')) return closeSearch();
+    var c = e.target.closest('[data-q]'); if (c) { sq.value = c.dataset.q; runSearch(); sq.focus(); }
+  });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !search.hidden) closeSearch(); });
+  header.querySelector('.search-btn').addEventListener('click', openSearch);
 
   // ---------- header behavior ----------
   function onScroll() { header.classList.toggle('is-scrolled', window.scrollY > 30); }

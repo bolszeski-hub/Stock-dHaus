@@ -19,7 +19,8 @@ SH.settings = {
 };
 
 SH.brands = [
-  { id: 'wc-wagyu', name: 'WC Wagyu', line: 'Australian wagyu, graded by bloodline and marble score.', mark: 'images/wc-wagyu-mark.webp', image: 'images/hero-ribeye.webp' },
+  { id: 'wc-wagyu', name: 'WC Wagyu', line: 'Australian wagyu, graded by bloodline and marble score.', mark: 'images/wc-wagyu-mark.webp', image: 'images/hero-ribeye.webp', site: 'https://windycitywagyu.vercel.app',
+    story: 'Australian wagyu bred from Japanese bloodlines, fed on grain for 450 days or more, and graded on Australia\'s official marbling scale. Every cut carries its tier (Black, Gold or White) and its marble score on the label.' },
   { id: 'joker-wagyu', name: 'Joker Wagyu', line: '[One line about Joker Wagyu]' },
   { id: 'gambler-wagyu', name: 'Gambler Wagyu', line: '[One line about Gambler Wagyu]' },
   { id: 'purely-meat-co', name: 'Purely Meat Co.', line: '[One line about Purely Meat Co.]' },

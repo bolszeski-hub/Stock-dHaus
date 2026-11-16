@@ -38,6 +38,7 @@
 </div>
 </div>
 
+<div class="brand-banner" id="brand-banner" hidden></div>
 <div class="shop-layout">
 <div class="filters" id="filters"></div>
 <div>
@@ -53,7 +54,7 @@
 <script>
 (function () {
   var S = window.SH;
-  var state = { brand: S.param('brand') || '', category: S.param('category') || '', q: '', sort: 'featured' };
+  var state = { brand: S.param('brand') || '', category: S.param('category') || '', q: (S.param('q') || '').toLowerCase(), sort: 'featured' };
   var filters = document.getElementById('filters');
 
   function counts(key, val) {
@@ -92,6 +93,12 @@
     document.getElementById('shop-eyebrow').textContent = brand ? 'Brand' : cat ? 'Category' : 'Shop';
     document.getElementById('shop-line').textContent = brand ? brand.line : 'Wagyu, beef, pork, poultry and seafood from the Stock\'d Up family of brands.';
     document.title = (brand ? brand.name : cat ? cat.name : 'Shop All') + ' — Stock\'d Haus';
+    var banner = document.getElementById('brand-banner');
+    banner.hidden = !brand;
+    if (brand) banner.innerHTML = (brand.image ? '<img class="bb-bg" src="' + brand.image + '" alt="">' : '') +
+      '<div class="bb-body">' + (brand.mark ? '<img class="bb-mark" src="' + brand.mark + '" alt="">' : '') +
+      '<p class="bb-story">' + S.esc(brand.story || '[A short story about ' + brand.name + ': where it comes from, what makes it different, and who it suits.]') + '</p>' +
+      (brand.site ? '<a class="text-link" href="' + brand.site + '" target="_blank" rel="noopener">Visit ' + S.esc(brand.name) + ' →</a>' : '') + '</div>';
     var list = S.products.filter(function (p) {
       if (state.brand && p.brand !== state.brand) return false;
       if (state.category && p.category !== state.category) return false;
@@ -112,7 +119,7 @@
     S.reveal(grid);
   }
   draw();
-  if (S.param('focus') === 'search') document.getElementById('q').focus();
+  if (state.q) document.getElementById('q').value = S.param('q');
 })();
 </script>
 </body>
