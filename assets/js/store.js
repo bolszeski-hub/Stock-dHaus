@@ -274,7 +274,7 @@
     S.toast('Thanks. Email signup connects when the store launches.');
     e.target.reset();
     store('sh-signed-up', true);
-    var pop = document.querySelector('.pop'); if (pop) pop.hidden = true;
+    var pop = document.querySelector('.pop'); if (pop) pop.remove();
   });
   // First-visit offer, shown once per visitor after a short delay
   if (!store('sh-pop-seen') && !store('sh-signed-up') && page === 'home') {
@@ -285,10 +285,15 @@
         '<button class="icon-btn pop-close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>' +
         '<p class="eyebrow eyebrow--center">Welcome to Stock\'d Haus</p><h2 id="pop-title" class="h2">' + S.money(set.emailOfferCents) + ' off your first order</h2>' +
         '<p class="muted">Join our list for ' + S.money(set.emailOfferCents) + ' off your first order of ' + S.money(set.emailOfferMinimumCents) + ' or more, plus first access to new drops.</p>' +
-        '<form class="news-form" data-signup><label class="visually-hidden" for="pop-email">Email address</label><input id="pop-email" type="email" placeholder="Email address" required><button class="btn" type="submit">Sign up</button></form></div>';
+        '<form class="news-form" data-signup><label class="visually-hidden" for="pop-email">Email address</label><input id="pop-email" type="email" placeholder="Email address" required><button class="btn" type="submit">Sign up</button></form>' +
+        '<button class="pop-skip" type="button">No thanks</button></div>';
       document.body.appendChild(pop);
       store('sh-pop-seen', true);
-      pop.addEventListener('click', function (e) { if (e.target === pop || e.target.closest('.pop-close')) pop.hidden = true; });
+      function closePop() { pop.remove(); document.removeEventListener('keydown', onKey); }
+      function onKey(e) { if (e.key === 'Escape') closePop(); }
+      pop.addEventListener('click', function (e) { if (e.target === pop || e.target.closest('.pop-close, .pop-skip')) closePop(); });
+      document.addEventListener('keydown', onKey);
+      pop.querySelector('.pop-close').focus();
     }, 9000);
   }
 

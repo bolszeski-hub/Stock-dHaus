@@ -260,7 +260,10 @@
 .pop { position: fixed; inset: 0; z-index: 110; display: flex; align-items: center; justify-content: center; padding: 20px; background: rgba(0, 0, 0, .65); }
 .pop-card { position: relative; width: min(520px, 100%); padding: 48px 36px 36px; text-align: center; background: var(--bg); border: 1px solid var(--gold); }
 .pop-card .h2 { margin: 0 0 14px; font-size: 30px; }
-.pop-close { position: absolute; top: 8px; right: 8px; }
+.pop[hidden] { display: none; }
+.pop-close { position: absolute; top: 8px; right: 8px; z-index: 1; }
+.pop-skip { margin-top: 18px; padding: 6px 4px; background: none; border: 0; color: var(--text-3); font: inherit; font-size: 13px; letter-spacing: .04em; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.pop-skip:hover { color: var(--text); }
 .news-form { display: flex; gap: 10px; margin-top: 22px; }
 .news-form input { flex: 1; min-width: 0; min-height: 52px; padding: 0 14px; background: var(--bg-2); border: 1px solid var(--line-3); color: var(--text); font-family: var(--sans); font-size: 15px; }
 @media (max-width: 480px) { .news-form { flex-direction: column; } }
